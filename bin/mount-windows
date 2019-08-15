@@ -1,0 +1,25 @@
+#!/bin/bash
+
+
+if ! [ $(id -u) = 0 ]; then
+	echo Run as root or use \"sudo $0\"
+	exit 1
+fi
+
+as_user=tina
+mount_cmd=ntfs-3g
+mount_options='defaults,exec'
+declare -A disks=(
+	[/dev/sda4]='/mnt/windows'
+	[/dev/sdb1]='/mnt/blackorwhite'
+)
+
+passwd_entry="$(grep $as_user /etc/passwd)"
+uid="$(echo $passwd_entry | cut -d':' -f 3)"
+gid="$(echo $passwd_entry | cut -d':' -f 4)"
+mount_options=$mount_options",uid=$uid,gid=$gid"
+
+for disk in "${!disks[@]}"; do
+	$mount_cmd "$disk" "${disks[$disk]}" -o "$mount_options"
+	echo mounted $disk to ${disks[$disk]}
+done
