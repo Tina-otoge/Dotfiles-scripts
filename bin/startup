@@ -5,6 +5,8 @@ xrdb -cpp cpp ~/.Xresources
 
 if [ "$XDG_SESSION_TYPE" = 'x11' ]; then
 	xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Disable While Typing Enabled" 0
+	xinput --set-prop 'Logitech USB-PS/2 Optical Mouse' 'libinput Accel Profile Enabled' 0, 1
+	xinput --set-prop 'Logitech USB-PS/2 Optical Mouse' 'Coordinate Transformation Matrix' 3.0, 0.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0, 3.0
 	~/.fehbg
 elif [ "$XDG_SESSION_TYPE" = 'wayland' ]; then
 	gsettings set org.gnome.desktop.interface gtk-theme 'Mint-Y-Red'

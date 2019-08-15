@@ -9,6 +9,7 @@ fusuma -d
 xrdb -cpp cpp ~/.Xresources
 
 if [ "$XDG_SESSION_TYPE" = 'x11' ]; then
+	xsetwacom set 'Wacom Bamboo One M Pen stylus' area 0 0 9000 6000
 	kill_and_start compton -b
 	kill_and_start ulauncher --hide-window &
 	~/.config/polybar/launch.sh &
