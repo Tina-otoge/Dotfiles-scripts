@@ -1,0 +1,9 @@
+#!/bin/bash
+
+archiver='7z'
+target="$1"
+filename=$(basename -- "$1")
+dest="${filename%.*}"
+shift
+
+"$archiver" x -o"$dest" "$target" $*
