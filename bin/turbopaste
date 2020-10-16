@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ "$#" -gt 0 ]; then
+	echo Does not support arguments yet >&2
+	exit 1
+fi
+
+out="$(date +%Y%m%d_%H%M%S)"
+arg="/tmp/turbopaste_$out.png"
+xclip -selection clipboard -o > "$arg"
+text="$(head "$arg" -n 1)"
+if [[ "$text" == 'http://'* || "$text" == 'https://'* ]]; then
+	curl -L "$text" -o "$arg"
+fi
+scp "$arg" tina.moe:"www/p/$out.png"
+rm -f "$arg"
+echo -n "https://victini.tina.moe/~tina/p/$out.png" | xclip -selection clipboard
+
+sound_file=/usr/share/sounds/freedesktop/stereo/complete.oga
+if [ -f $sound_file ]; then
+	paplay $sound_file
+fi
+notify-send Turbopaste 'File uploaded!'

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+proton_version='4.11'
+steam_library_path=/mnt/blackorwhite/Games/Steam
+
+
+proton_path="$steam_library_path"'/steamapps/common/Proton '"$proton_version"'/proton'
+STEAM_COMPAT_DATA_PATH="$steam_library_path"'/steamapps/compatdata' \
+PROTON_NO_ESYNC=1 \
+PROTON_USE_WINED3D11=1 \
+"$proton_path" $*

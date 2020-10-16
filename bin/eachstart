@@ -1,0 +1,10 @@
+#!/bin/bash
+
+~/.fehbg
+~/.config/polybar/launch.sh
+autocutsel -s PRIMARY -fork
+picom -b || compton -b
+xset m 0 0
+xsetwacom set 'Wacom Bamboo One M Pen stylus' area 0 0 9000 6000
+xinput map-to-output 'Wacom Bamboo One M Pen stylus' DP-0
+xinput map-to-output 'Melfas LGD AIT Touch Controller' DP-0
