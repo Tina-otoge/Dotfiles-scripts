@@ -1,0 +1,20 @@
+#!/bin/bash
+
+URL='http://savatier.freeboxos.fr/www/up'
+
+src_dir="$HOME/Pictures/Screenshots/"
+name="$(ls ~/Pictures/Screenshots/ -t | head -n 1)"
+src="$src_dir$name"
+
+target_dir='www/up/'
+
+if grep freevm /etc/hosts >/dev/null; then
+	target=freevm
+else
+	target=savatier.freeboxos.fr
+fi
+
+rsync -q "$src" "$target":"$target_dir$name"
+
+echo "$URL"/"$name" | xclip
+xclip -o | xclip -selection c
