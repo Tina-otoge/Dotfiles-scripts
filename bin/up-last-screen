@@ -1,6 +1,6 @@
 #!/bin/bash
 
-URL='http://savatier.freeboxos.fr/www/up'
+URL='http://savatier.freeboxos.fr/raw/up'
 
 src_dir="$HOME/Pictures/Screenshots/"
 name="$(ls ~/Pictures/Screenshots/ -t | head -n 1)"
@@ -18,3 +18,5 @@ rsync -q "$src" "$target":"$target_dir$name"
 
 echo "$URL"/"$name" | xclip
 xclip -o | xclip -selection c
+
+notify-send 'Screenshot uploaded! Ready to paste'
