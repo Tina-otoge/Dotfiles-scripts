@@ -1,9 +1,13 @@
 #!/bin/bash
 
+xrandr --output DP-0 --primary
+xrandr --output DP-0 --auto
+xrandr --output DP-0 --left-of HDMI-0
 ~/.fehbg
 ~/.config/polybar/launch.sh
 autocutsel -s PRIMARY -fork
 picom -b || compton -b
+ln -sf {app/com.discordapp.Discord,$XDG_RUNTIME_DIR}/discord-ipc-0
 xset m 0 0
 xsetwacom set 'Wacom Bamboo One M Pen stylus' area 0 0 9000 6000
 xinput map-to-output 'Wacom Bamboo One M Pen stylus' DP-0
