@@ -1,0 +1,28 @@
+#!/bin/bash
+
+out="$HOME/Pictures/Screenshots/screen $(date '+%F %H-%M-%S').png"
+mkdir -p "$(dirname "$out")"
+
+if [ "$1" == "area" ]; then
+	area=1
+fi
+
+if [ "$WAYLAND_DISPLAY" ]; then
+	if [ "$area" ]; then
+		mode=area
+	else
+		mode=output
+	fi
+	grimshot save $mode "$out"
+	cat "$out" | wl-copy --type image/png
+	exit 0
+fi
+
+if [ "$area" ]; then
+	maim -s -u > "$out"
+else
+	maim -x $DISPLAY.$SCREEN > "$out"
+fi
+
+cat "$out" | xclip -selection clipboard -t image/png
+cat "$out" | xclip -t image/png
