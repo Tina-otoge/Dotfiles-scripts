@@ -5,11 +5,9 @@ kill_and_start() {
 	$*
 }
 
-fusuma -d
-xrdb -cpp cpp ~/.Xresources
-
 if [ "$XDG_SESSION_TYPE" = 'x11' ]; then
 	kill_and_start picom -b
 	~/.config/polybar/launch.sh &
 elif [ "$XDG_SESSION_TYPE" = 'wayland' ]; then
+	exit 0
 fi
