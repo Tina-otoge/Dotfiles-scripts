@@ -12,3 +12,13 @@ elif [ "$XDG_SESSION_TYPE" = 'wayland' ]; then
 	gsettings set org.gnome.desktop.interface gtk-theme 'Mint-Y-Red'
 	gsettings set org.gnome.desktop.interface icon-theme 'Xenlism-Wildfire-SunDay'
 fi
+if [ "$XDG_CURRENT_DESKTOP" = 'GNOME-Flashback:GNOME' ]; then
+	dbus-send \
+		--session \
+		--print-reply=literal \
+		--dest=org.gnome.SessionManager \
+		"/org/gnome/SessionManager" \
+		org.gnome.SessionManager.RegisterClient \
+		"string:i3" \
+		"string:$DESKTOP_AUTOSTART_ID"
+fi
