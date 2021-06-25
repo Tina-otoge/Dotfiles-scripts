@@ -18,6 +18,15 @@ if [ "$WAYLAND_DISPLAY" ]; then
 	exit 0
 fi
 
+if [ $DESKTOP_SESSION = gnome ]; then
+	if [ "$area" ]; then
+		gnome-screenshot -c -a -f "$out"
+	else
+		gnome-screenshot -c -f "$out"
+	fi
+	exit 0
+fi
+
 if [ "$area" ]; then
 	maim -s -u > "$out"
 else

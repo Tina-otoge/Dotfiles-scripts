@@ -6,10 +6,22 @@ pkill -f nm-applet && (nm-applet &)
 
 if [ "$XDG_SESSION_TYPE" = 'x11' ]; then
 	xinput set-prop "Synaptics TM3145-005" "libinput Disable While Typing Enabled" 0
+	xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Disable While Typing Enabled" 0
+	xmodmap ~/.Xmodmap
+	xrdb -cpp cpp ~/.Xresources
 	~/.fehbg
 elif [ "$XDG_SESSION_TYPE" = 'wayland' ]; then
 	gsettings set org.gnome.desktop.interface gtk-theme 'Mint-Y-Red'
 	gsettings set org.gnome.desktop.interface icon-theme 'Xenlism-Wildfire-SunDay'
 fi
 
-echo startup done
+if [ "$XDG_CURRENT_DESKTOP" = 'GNOME-Flashback:GNOME' ]; then
+	dbus-send \
+		--session \
+		--print-reply=literal \
+		--dest=org.gnome.SessionManager \
+		"/org/gnome/SessionManager" \
+		org.gnome.SessionManager.RegisterClient \
+		"string:i3" \
+		"string:$DESKTOP_AUTOSTART_ID"
+fi

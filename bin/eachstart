@@ -1,17 +1,22 @@
 #!/bin/bash
 
 kill_and_start() {
-	pkill -f "$1"
+	pkill "$1"
 	$*
 }
 
-fusuma -d
-xrdb -cpp cpp ~/.Xresources
+ln -sf {app/com.discordapp.Discord,$XDG_RUNTIME_DIR}/discord-ipc-0
 
 if [ "$XDG_SESSION_TYPE" = 'x11' ]; then
-	kill_and_start compton -b
-	kill_and_start ulauncher --hide-window &
+	# xrandr --output DP-0 --primary
+	# xrandr --output DP-0 --auto
+	# xrandr --output DP-0 --left-of HDMI-0
+	kill_and_start picom -b
 	~/.config/polybar/launch.sh &
+	xset m 0 0
+	xsetwacom set 'Wacom Bamboo One M Pen stylus' area 0 0 9000 6000
+	xinput map-to-output 'Wacom Bamboo One M Pen stylus' DP-0
+	xinput map-to-output 'Melfas LGD AIT Touch Controller' DP-0
 elif [ "$XDG_SESSION_TYPE" = 'wayland' ]; then
-	GDK_BACKEND=x11 kill_and_start ulauncher --hide-window &
+	exit 0
 fi
