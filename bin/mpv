@@ -1,0 +1,6 @@
+#!/bin/bash
+
+if [[ "$1" = 'magnet:'* ]] || [[ "$1" = *.torrent ]]; then
+	exec webtorrent --mpv "$1"
+fi
+exec /usr/bin/mpv "$@"
