@@ -1,0 +1,40 @@
+#!/usr/bin/env python
+
+import os
+import subprocess
+import sys
+from pathlib import Path
+import shutil
+
+
+def ask(q: str):
+    print(q, '[y/N]', end=' ')
+    r = input()[:-1].lower()
+    return 'yes'.startswith(r)
+
+
+PAKS_DIR = Path(f'{os.environ.get("HOME")}/.var/app')
+
+
+def main():
+    result = subprocess.run('flatpak list --columns=application'.split(), capture_output=True)
+    installed_paks = result.stdout.decode().splitlines()
+
+    result = subprocess.run(f'ls -1 {PAKS_DIR}'.split(), capture_output=True)
+    paks_data_directories = result.stdout.decode().splitlines()
+
+    for app_id in paks_data_directories:
+        if app_id in installed_paks:
+            print(app_id, 'is currently installed, skipping...')
+            continue
+
+        print(app_id, 'is found in local data folder, but is not listed as installed')
+        folder = PAKS_DIR / app_id
+        subprocess.run(['du', '-sh', str(folder)])
+        if ask('Remove directory?'):
+            shutil.rmtree(PAKS_DIR / app_id)
+            print('Deleted')
+
+
+if __name__ == '__main__':
+    main()
