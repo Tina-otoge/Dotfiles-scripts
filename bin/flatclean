@@ -17,12 +17,19 @@ PAKS_DIR = Path(f'{os.environ.get("HOME")}/.var/app')
 
 
 def main():
+    print('Fetching installed Flatpaks...', end='', flush=True)
     result = subprocess.run('flatpak list --columns=application'.split(), capture_output=True)
     installed_paks = result.stdout.decode().splitlines()
+    print(' Done')
 
+    print('Fetching local Flatpak app directories...', end='', flush=True)
     result = subprocess.run(f'ls -1 {PAKS_DIR}'.split(), capture_output=True)
     paks_data_directories = result.stdout.decode().splitlines()
+    print(' Done')
 
+    print()
+    print('Starting review')
+    print()
     for app_id in paks_data_directories:
         if app_id in installed_paks:
             print(app_id, 'is currently installed, skipping...')
@@ -34,6 +41,9 @@ def main():
         if ask('Remove directory?'):
             shutil.rmtree(PAKS_DIR / app_id)
             print('Deleted')
+
+    print()
+    print('Exiting...')
 
 
 if __name__ == '__main__':
