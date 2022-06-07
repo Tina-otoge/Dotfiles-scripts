@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+
+from argparse import ArgumentParser
+from pathlib import Path
+import json
+import subprocess
+
+
+VCS_FILE = Path('~/.cache/yay/vcs.json')
+
+
+def run_argparse():
+    parser = ArgumentParser(description="Force upgrade installed git packages")
+    parser.add_argument(
+        'path',
+        nargs='?',
+        default='~/.cache/yay/vcs.json',
+        help="Path to yay's vcs.json file",
+        type=Path,
+    )
+    return parser.parse_args()
+
+
+def main():
+    args = run_argparse()
+    path = args.path.expanduser()
+    with path.open() as f:
+        data = json.load(f)
+    for pkg in data:
+        print(f"Found package \"{pkg}\"")
+        repo = list(data[pkg].keys())[0]
+        data[pkg][repo]['sha'] = '0'
+        print("sha hash has been force set to 0")
+    with path.open('w') as f:
+        json.dump(data, f, indent="\t")
+    print(f"Wrote new data to {path}")
+    subprocess.run(['yay', '-S'] + list(data.keys()))
+
+
+if __name__ == '__main__':
+    main()
