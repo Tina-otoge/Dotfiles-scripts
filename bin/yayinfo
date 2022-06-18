@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+
+import json
+import sys
+import subprocess
+
+
+packages = sys.argv[1:]
+
+if not packages:
+    r = sys.stdin.read()
+    packages = [x.strip() for x in r.split()]
+
+def find_name(name: str) -> str:
+    dot_pos = name.rfind('.')
+    if dot_pos > 0:
+        name = name[:dot_pos]
+        dash_pos = name.rfind('-')
+        name = name[:dash_pos]
+    return name
+
+packages = [
+    find_name(x)
+    for x in packages
+]
+
+result = subprocess.run(['yay', '-Si'] + packages, capture_output=True)
+
+print('Exit status:', result.returncode)
+print('stderr:', result.stderr.decode())
+
+for info in result.stdout.decode().split('\n\n'):
+    d = {}
+    for line in info.split('\n'):
+        parts = line.split(':')
+        if len(parts) < 2:
+            continue
+        key, value = parts[0].strip(), parts[1][1:]
+        d[key] = value
+    if not d:
+        continue
+    repo = d.get('Repository')
+    name = d['Name']
+    desc = d.get('Description')
+    if len(name) < 20:
+        name = name + (' ' * (20 - len(name)))
+    print(f'{name}: {desc} ({repo})')
