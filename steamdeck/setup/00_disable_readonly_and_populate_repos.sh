@@ -5,7 +5,8 @@ sudo steamos-readonly disable
 sudo pacman-key --init
 sudo pacman-key --populate archlinux
 sudo pacman-key --populate holo
-sudo pacman-key -u
+# Does not seem necessary
+# sudo pacman-key -u
 
 # Attempt at fixing broken signature on a package
 # sudo pacman -Su
@@ -14,3 +15,6 @@ sudo pacman-key -u
 
 # I finally gave up and just disabled sig checking
 sudo sed -i 's/SigLevel    = .*/SigLevel    = Never/g' /etc/pacman.conf
+
+# Not running if not needed
+# sudo pacman -Sy

@@ -7,9 +7,12 @@ qt5-base
 qt5-declarative
 "
 
-sudo pacman -S --noconfirm --overwrite \* $deps
+# That's scarry
+# sudo pacman -S --noconfirm --overwrite \* $deps
 
-sudo pacman -S --noconfirm --overwrite \* $(echo "
+# Let's not overwrite
+# sudo pacman -S --noconfirm --overwrite \* $(echo "
+sudo pacman -S --noconfirm $(echo "
 locate
 materia-kde kvantum-theme-materia
 unclutter
@@ -19,6 +22,9 @@ zsh zsh-syntax-highlighting
 yay_pkgs="
 ocs-url
 "
+
+# Skipping
+return 0
 
 for pkg in $yay_pkgs; do
 	if ! pacman -Qi $pkg >/dev/null; then

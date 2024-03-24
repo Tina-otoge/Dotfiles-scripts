@@ -4,7 +4,11 @@ if command -v yay; then
 	return 0
 fi
 
-sudo pacman -S --noconfirm --needed --overwrite \* git base-devel
+# Skipping yay install
+return 0
+
+# sudo pacman -S --noconfirm --needed --overwrite \* git base-devel
+sudo pacman -S base-devel
 (
 	cd /tmp
 	git clone https://aur.archlinux.org/yay-bin.git
