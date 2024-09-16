@@ -3,4 +3,8 @@
 if [[ "$1" = 'magnet:'* ]] || [[ "$1" = *.torrent ]]; then
 	exec webtorrent --mpv "$1"
 fi
+
+if [[ "$1" = *.m3u ]]; then
+	exec mpv --script-opts=iptv=1 "$1"
+fi
 exec /usr/bin/mpv "$@"
