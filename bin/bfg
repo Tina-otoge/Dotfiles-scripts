@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# sudo docker run -it --rm \
+podman run -it --rm \
+	--user root \
+	--volume "$PWD:/home/bfg/workspace" \
+	--name bfg \
+	koenrh/bfg "$@"
